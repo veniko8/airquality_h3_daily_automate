@@ -1,1 +1,8 @@
-
+pandas
+numpy
+h3
+shapely
+pyproj
+python-dotenv
+supabase
+requests
