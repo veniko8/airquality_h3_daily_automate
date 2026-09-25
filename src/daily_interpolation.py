@@ -175,13 +175,13 @@ def wind_multiplier(
     diff = angdiff_deg(station_to_cell_bearing, downwind)
     diff_rad = math.radians(diff)
 
-    # Wind effect strength (0 at calm, ~1 at 5 m/s+)
+    # Wind effect strength scales with speed (capped at 5 m/s for max effect)
     k = min(1.0, max(0.0, wind_speed / 5.0))
 
-    # cos: +1 = downwind, -1 = upwind
+    # Cosine scaling: +1 means cell is directly downwind (boosts weight), -1 means upwind (reduces weight)
     mult = 1.0 + k * math.cos(diff_rad)
 
-    # keep stable
+    # Clamp multiplier to keep interpolation stable within safe bounds
     return float(max(min_mult, min(max_mult, mult)))
 
 
@@ -326,10 +326,16 @@ def build_surface_h3(
     min_stations: int = 2,
 ) -> pd.DataFrame:
     """
-    df: normalized station-hour rows
-    grid: h3 centroids with columns h3, lat, lon
-
-    Returns: ts_utc, pollutant, h3, aqi_est
+    Builds a spatial interpolation surface across the H3 grid for each timestamp and pollutant.
+    
+    Args:
+        df (pd.DataFrame): Normalized station-hour or daily rows.
+        grid (pd.DataFrame): H3 centroids containing columns: h3, lat, lon.
+        power (float): Inverse distance weighting (IDW) power parameter. Default is 2.0.
+        min_stations (int): Minimum unique stations required to process a group.
+        
+    Returns:
+        pd.DataFrame: A DataFrame containing columns: ts_utc, pollutant, h3, aqi_est.
     """
     outputs = []
     skipped_na = 0
