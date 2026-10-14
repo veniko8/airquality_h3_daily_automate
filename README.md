@@ -30,3 +30,13 @@ The pipeline consists of four core legs:
 * **Spatial Modeling:** Python scripts pull station data and wind parameters from Supabase, run daily H3 hexagonal interpolations, and output formatted datasets for mapping.
 * **Kindergarten Exposure Storytelling:** The system couples official Zagreb kindergarten locations with spatial data, allowing parents to assess how bad air quality is at different kindergartens generally, by time of day, and by day of the week via Power BI matrices and spatial layers.
 * **Reporting & AI Summaries:** Automated daily text summaries generated via LLM integrations inside n8n are piped directly into Power BI text visuals to give instant readability alongside deep telemetry.
+
+---
+
+## 📊 Geospatial Visualization
+
+* **Dynamic Hex Mapping (Kepler.gl):** Generated via a Python pipeline implementing Uber's H3 spatial indexing and wind-aware Inverse Distance Weighting (IDW) interpolation. Station observations are continuously modeled into hexagonal surface grids to evaluate spatial pollution risk across Zagreb kindergartens.
+* **Executive Analytics (Power BI):** Maintained locally for detailed time-series heatmaps, pollutant breakdowns ($PM_{2.5}$, $PM_{10}$, $NO_2$), and automated AI daily summary integration.
+
+> 🗺️ **Zagreb Air Quality Exposure Map (Kepler.gl):**
+> ![Zagreb Air Quality Kepler Hex Map](assets/kepler_map.png)
